@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Guardião - Serviços de Qualidade</title>
+
+  <!-- PWA / App Mobile Tags -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0d0d0d">
+
+  <!-- Fonte Moderna (Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at top, #1a1a1a 0%, #0a0a0a 100%);
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --card-border: rgba(212, 175, 55, 0.25);
+      --card-border-hover: rgba(212, 175, 55, 0.8);
+      --gold-primary: #d4af37;
+      --gold-light: #f3e5ab;
+      --gold-gradient: linear-gradient(135deg, #f7e7ad 0%, #c5a059 50%, #8a6d2b 100%);
+      --text-white: #ffffff;
+      --text-muted: #888888;
+      --green-status: #00e676;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-white);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 100vh;
+      padding: 24px 18px;
+      overflow-x: hidden;
+    }
+
+    /* Botão Flutuante de Configuração */
+    .admin-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--card-border);
+      color: var(--gold-primary);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      z-index: 10;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .admin-btn:active {
+      transform: rotate(90deg) scale(0.9);
+      border-color: var(--gold-primary);
+    }
+
+    /* Topo com Logo da Empresa */
+    header {
+      text-align: center;
+      margin-top: 20px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .logo-container {
+      width: 100%;
+      max-width: 250px;
+      position: relative;
+    }
+
+    .logo-container img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.8));
+    }
+
+    /* Lista de Cards de Aplicativos */
+    .app-container {
+      width: 100%;
+      max-width: 420px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin: 25px 0;
+      animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Card Pro Style */
+    .system-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 20px;
+      border-radius: 20px;
+      text-decoration: none;
+      color: var(--text-white);
+      border: 1px solid var(--card-border);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      overflow: hidden;
+    }
+
+    /* Indicador de Status "Online" */
+    .status-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      background-color: var(--green-status);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--green-status);
+    }
+
+    /* Efeito de Pressão no Card */
+    .system-card:active {
+      transform: scale(0.97);
+      border-color: var(--card-border-hover);
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    /* Wrapper do Logo/Imagem dentro do Card */
+    .card-logo-wrapper {
+      width: 100%;
+      height: 85px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+      margin-bottom: 14px;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 10px;
+    }
+
+    .card-logo-wrapper img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+    }
+
+    /* Título e Ação do Card */
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 12px;
+      margin-top: 4px;
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-white);
+      letter-spacing: 0.3px;
+      flex: 1;
+      padding-right: 10px;
+    }
+
+    .action-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--gold-gradient);
+      color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 600;
+      opacity: 0.7;
+    }
+
+    /* Modal de Administração Estilo App */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      justify-content: center;
+      align-items: flex-end;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: #141414;
+      border: 1px solid var(--card-border);
+      border-top-left-radius: 28px;
+      border-top-right-radius: 28px;
+      padding: 24px;
+      width: 100%;
+      max-width: 480px;
+      max-height: 85vh;
+      overflow-y: auto;
+      color: var(--text-white);
+      animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 12px;
+    }
+
+    .modal-header h2 {
+      color: var(--gold-primary);
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .close-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: none;
+      color: var(--text-white);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 14px;
+      border-radius: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--gold-primary);
+      font-weight: 700;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 8px;
+      background: #090909;
+      border: 1px solid #282828;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus {
+      border-color: var(--gold-primary);
+    }
+
+    .save-btn {
+      width: 100%;
+      background: var(--gold-gradient);
+      color: #000;
+      padding: 16px;
+      border: none;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 10px;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    }
+
+    /* Animações Keyframes */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <button class="admin-btn" onclick="openAdmin()" title="Painel Admin">⚙️</button>
+
+  <header>
+    <div class="logo-container">
+      <img id="main-logo" src="logo.png" alt="Guardião" onerror="this.src='https://via.placeholder.com/250x120/0a0a0a/D4AF37?text=GUARDI%C3%83O'">
+    </div>
+  </header>
+
+  <main class="app-container" id="buttons-container">
+    <!-- Cards renderizados dinamicamente -->
+  </main>
+
+  <footer>
+    Guardião &copy; Serviços de Qualidade
+  </footer>
+
+  <!-- Modal Admin -->
+  <div class="modal" id="admin-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Painel Administrativo</h2>
+        <button class="close-btn" onclick="closeAdmin()">✕</button>
+      </div>
+      <form id="admin-form">
+        <div class="form-group">
+          <label>URL da Logo Principal</label>
+          <input type="text" id="logo-url-input" placeholder="logo.png ou URL da imagem">
+        </div>
+        <div id="inputs-container"></div>
+        <button type="submit" class="save-btn">SALVAR ALTERAÇÕES</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const defaultLogo = "logo.png";
+    const defaultData = [
+      {
+        id: 1,
+        title: "Plataforma Relatório Master - Plantões",
+        url: "https://wendeltrindade.github.io/RondaMaster/",
+        icon: "https://i.postimg.cc/kgNgt9Fm/Whats-App-Image-2026-07-22-at-14-11-34.jpg"
+      },
+      {
+        id: 2,
+        title: "Plataforma Relatório Imagens",
+        url: "https://wendeltrindade.github.io/guardiaorelatorios/",
+        icon: "https://i.postimg.cc/MHwsH7WT/Whats-App-Image-2026-07-22-at-14-05-37.jpg"
+      },
+      {
+        id: 3,
+        title: "Plataforma Fotos e Videos",
+        url: "https://wendeltrindade.github.io/VigiaFoto/",
+        icon: "https://i.postimg.cc/05GN3pw1/Gemini-Generated-Image-6laabv6laabv6laa.png"
+      }
+    ];
+
+    function getData() {
+      const savedData = localStorage.getItem('guardiao_platforms');
+      return savedData ? JSON.parse(savedData) : defaultData;
+    }
+
+    function getLogo() {
+      return localStorage.getItem('guardiao_logo') || defaultLogo;
+    }
+
+    function renderApp() {
+      document.getElementById('main-logo').src = getLogo();
+
+      const data = getData();
+      const container = document.getElementById('buttons-container');
+      container.innerHTML = '';
+
+      data.forEach(item => {
+        const card = document.createElement('a');
+        card.href = item.url;
+        card.target = "_blank";
+        card.className = 'system-card';
+        card.innerHTML = `
+          <div class="status-badge">
+            <div class="status-dot"></div>
+            Ativo
+          </div>
+          <div class="card-logo-wrapper">
+            <img src="${item.icon}" alt="${item.title}">
+          </div>
+          <div class="card-footer">
+            <span class="card-title">${item.title}</span>
+            <div class="action-icon">➔</div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function openAdmin() {
+      const password = prompt("Senha de acesso:");
+      if (password === "admin123") {
+        buildAdminForm();
+        document.getElementById('admin-modal').style.display = 'flex';
+      } else if (password !== null) {
+        alert("Senha incorreta!");
+      }
+    }
+
+    function closeAdmin() {
+      document.getElementById('admin-modal').style.display = 'none';
+    }
+
+    function buildAdminForm() {
+      document.getElementById('logo-url-input').value = getLogo();
+      const data = getData();
+      const container = document.getElementById('inputs-container');
+      container.innerHTML = '';
+
+      data.forEach((item, index) => {
+        const group = document.createElement('div');
+        group.className = 'form-group';
+        group.innerHTML = `
+          <label>Card ${index + 1}</label>
+          <input type="text" id="title-${item.id}" value="${item.title}" placeholder="Nome do Sistema" required>
+          <input type="url" id="url-${item.id}" value="${item.url}" placeholder="Link de Acesso (https://...)" required>
+          <input type="url" id="icon-${item.id}" value="${item.icon}" placeholder="Link da Imagem/Logo" required>
+        `;
+        container.appendChild(group);
+      });
+    }
+
+    document.getElementById('admin-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const newLogo = document.getElementById('logo-url-input').value;
+      localStorage.setItem('guardiao_logo', newLogo);
+
+      const data = getData();
+      const updatedData = data.map(item => ({
+        id: item.id,
+        title: document.getElementById(`title-${item.id}`).value,
+        url: document.getElementById(`url-${item.id}`).value,
+        icon: document.getElementById(`icon-${item.id}`).value
+      }));
+
+      localStorage.setItem('guardiao_platforms', JSON.stringify(updatedData));
+      renderApp();
+      closeAdmin();
+    });
+
+    renderApp();
+  </script>
+</body>
+</html>
