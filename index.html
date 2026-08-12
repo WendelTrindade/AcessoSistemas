@@ -5,28 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Guardião - Serviços de Qualidade</title>
 
-  <!-- PWA / App Mobile Tags -->
+  <!-- PWA / Mobile Tags -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#0d0d0d">
+  <meta name="theme-color" content="#0a0a0c">
 
-  <!-- Fonte Moderna (Inter) -->
+  <!-- Fonte Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg-gradient: radial-gradient(circle at top, #1a1a1a 0%, #0a0a0a 100%);
-      --card-bg: rgba(255, 255, 255, 0.03);
-      --card-border: rgba(212, 175, 55, 0.25);
-      --card-border-hover: rgba(212, 175, 55, 0.8);
+      --bg-main: #0a0a0c;
+      --card-bg: rgba(22, 22, 26, 0.85);
       --gold-primary: #d4af37;
       --gold-light: #f3e5ab;
       --gold-gradient: linear-gradient(135deg, #f7e7ad 0%, #c5a059 50%, #8a6d2b 100%);
+      --border-card: rgba(212, 175, 55, 0.3);
+      --border-hover: rgba(212, 175, 55, 0.9);
       --text-white: #ffffff;
-      --text-muted: #888888;
+      --text-muted: #9a9a9e;
       --green-status: #00e676;
     }
 
@@ -40,28 +40,31 @@
     }
 
     body {
-      background: var(--bg-gradient);
+      background: var(--bg-main);
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 50% 100%, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
       color: var(--text-white);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
       min-height: 100vh;
-      padding: 24px 18px;
+      padding: 20px 16px;
       overflow-x: hidden;
     }
 
-    /* Botão Flutuante de Configuração */
+    /* Botão de Configuração */
     .admin-btn {
       position: absolute;
-      top: 20px;
-      right: 20px;
-      background: rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--card-border);
+      top: 18px;
+      right: 18px;
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-card);
       color: var(--gold-primary);
-      width: 44px;
-      height: 44px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       font-size: 18px;
       cursor: pointer;
@@ -70,7 +73,7 @@
       justify-content: center;
       transition: all 0.3s ease;
       z-index: 10;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
     }
 
     .admin-btn:active {
@@ -78,42 +81,41 @@
       border-color: var(--gold-primary);
     }
 
-    /* Topo com Logo da Empresa */
+    /* Topo / Logo */
     header {
       text-align: center;
-      margin-top: 20px;
+      margin-top: 15px;
       width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: fadeInDown 0.8s ease-out;
     }
 
     .logo-container {
       width: 100%;
-      max-width: 250px;
-      position: relative;
+      max-width: 230px;
     }
 
     .logo-container img {
       width: 100%;
       height: auto;
       object-fit: contain;
-      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.8));
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.9));
     }
 
-    /* Lista de Cards de Aplicativos */
+    /* Lista de Cards */
     .app-container {
       width: 100%;
-      max-width: 420px;
+      max-width: 400px;
       display: flex;
       flex-direction: column;
-      gap: 18px;
-      margin: 25px 0;
-      animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      gap: 20px;
+      margin: 20px 0;
+      animation: fadeInUp 0.8s ease-out;
     }
 
-    /* Card Pro Style */
+    /* Design do Card */
     .system-card {
       position: relative;
       display: flex;
@@ -121,29 +123,67 @@
       background: var(--card-bg);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      padding: 20px;
       border-radius: 20px;
       text-decoration: none;
       color: var(--text-white);
-      border: 1px solid var(--card-border);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-card);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
       transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
       overflow: hidden;
+      cursor: pointer;
     }
 
-    /* Indicador de Status "Online" */
+    .system-card:active {
+      transform: scale(0.97);
+      border-color: var(--border-hover);
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.25);
+    }
+
+    /* Banner/Logo dentro do Card */
+    .card-banner {
+      width: 100%;
+      height: 160px;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 10px;
+    }
+
+    .card-banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.7));
+    }
+
+    .system-card:active .card-banner img {
+      transform: scale(1.03);
+    }
+
+    /* Badge Status */
     .status-badge {
       position: absolute;
-      top: 14px;
-      right: 14px;
+      top: 12px;
+      right: 12px;
+      background: rgba(10, 10, 12, 0.85);
+      backdrop-filter: blur(8px);
+      padding: 5px 12px;
+      border-radius: 20px;
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       color: var(--text-muted);
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 0.5px;
       text-transform: uppercase;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      z-index: 2;
     }
 
     .status-dot {
@@ -154,86 +194,59 @@
       box-shadow: 0 0 8px var(--green-status);
     }
 
-    /* Efeito de Pressão no Card */
-    .system-card:active {
-      transform: scale(0.97);
-      border-color: var(--card-border-hover);
-      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
-      background: rgba(255, 255, 255, 0.06);
-    }
-
-    /* Wrapper do Logo/Imagem dentro do Card */
-    .card-logo-wrapper {
-      width: 100%;
-      height: 85px;
+    /* Conteúdo Inferior do Card */
+    .card-body {
+      padding: 16px 18px;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 10px;
-      margin-bottom: 14px;
-      border-radius: 12px;
-      background: rgba(0, 0, 0, 0.2);
-      padding: 10px;
+      flex-direction: column;
+      gap: 4px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.01) 0%, rgba(255, 255, 255, 0.03) 100%);
     }
 
-    .card-logo-wrapper img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
-    }
-
-    /* Título e Ação do Card */
-    .card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      padding-top: 12px;
-      margin-top: 4px;
+    .card-tag {
+      font-size: 0.65rem;
+      color: var(--gold-primary);
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
     }
 
     .card-title {
       font-size: 0.95rem;
       font-weight: 700;
       color: var(--text-white);
-      letter-spacing: 0.3px;
-      flex: 1;
-      padding-right: 10px;
+      line-height: 1.3;
     }
 
-    .action-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--gold-gradient);
-      color: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.9rem;
-      font-weight: bold;
-      box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
-    }
-
+    /* Rodapé com Link */
     footer {
       text-align: center;
       font-size: 0.7rem;
       color: var(--text-muted);
-      letter-spacing: 1.5px;
+      letter-spacing: 1px;
       text-transform: uppercase;
       font-weight: 600;
-      opacity: 0.7;
+      margin-bottom: 5px;
     }
 
-    /* Modal de Administração Estilo App */
+    footer a {
+      color: var(--gold-primary);
+      text-decoration: none;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    footer a:hover {
+      color: var(--gold-light);
+      text-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
+    }
+
+    /* Modal Admin */
     .modal {
       display: none;
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85);
+      background: rgba(0,0,0,0.88);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       justify-content: center;
@@ -242,8 +255,8 @@
     }
 
     .modal-content {
-      background: #141414;
-      border: 1px solid var(--card-border);
+      background: #121215;
+      border: 1px solid var(--border-card);
       border-top-left-radius: 28px;
       border-top-right-radius: 28px;
       padding: 24px;
@@ -253,14 +266,13 @@
       overflow-y: auto;
       color: var(--text-white);
       animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
     }
 
     .modal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       padding-bottom: 12px;
     }
@@ -283,7 +295,7 @@
     }
 
     .form-group {
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid rgba(255, 255, 255, 0.05);
       padding: 14px;
@@ -295,22 +307,20 @@
       font-size: 0.75rem;
       color: var(--gold-primary);
       font-weight: 700;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
     .form-group input {
       width: 100%;
       padding: 12px;
       margin-bottom: 8px;
-      background: #090909;
+      background: #0a0a0c;
       border: 1px solid #282828;
       border-radius: 8px;
       color: #fff;
       font-size: 0.85rem;
       outline: none;
-      transition: border-color 0.2s;
     }
 
     .form-group input:focus {
@@ -328,11 +338,9 @@
       font-weight: 800;
       cursor: pointer;
       margin-top: 10px;
-      letter-spacing: 0.5px;
       box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
     }
 
-    /* Animações Keyframes */
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -355,16 +363,16 @@
 
   <header>
     <div class="logo-container">
-      <img id="main-logo" src="logo.png" alt="Guardião" onerror="this.src='https://via.placeholder.com/250x120/0a0a0a/D4AF37?text=GUARDI%C3%83O'">
+      <img id="main-logo" src="logo.png" alt="Guardião" onerror="this.src='https://via.placeholder.com/230x120/0a0a0c/D4AF37?text=GUARDI%C3%83O'">
     </div>
   </header>
 
   <main class="app-container" id="buttons-container">
-    <!-- Cards renderizados dinamicamente -->
+    <!-- Cards renderizados via JS -->
   </main>
 
   <footer>
-    Guardião &copy; Serviços de Qualidade
+    <a href="https://guardiaoseg.com.br/" target="_blank">Guardião &copy; Serviços de Qualidade</a>
   </footer>
 
   <!-- Modal Admin -->
@@ -390,20 +398,23 @@
     const defaultData = [
       {
         id: 1,
-        title: "Plataforma Relatório Master - Plantões",
+        tag: "Plataforma",
+        title: "APP - Guardião Relatórios Plantões",
         url: "https://wendeltrindade.github.io/RondaMaster/",
         icon: "https://i.postimg.cc/kgNgt9Fm/Whats-App-Image-2026-07-22-at-14-11-34.jpg"
       },
       {
         id: 2,
-        title: "Plataforma Relatório Imagens",
-        url: "https://wendeltrindade.github.io/guardiaorelatorios/",
+        tag: "Plataforma",
+        title: "APP - Guardião Relatório por Imagens",
+        url: "https://wendeltrindade.github.io/VigiaFoto/",
         icon: "https://i.postimg.cc/MHwsH7WT/Whats-App-Image-2026-07-22-at-14-05-37.jpg"
       },
       {
         id: 3,
-        title: "Plataforma Fotos e Videos",
-        url: "https://wendeltrindade.github.io/VigiaFoto/",
+        tag: "Aplicativo Mobile",
+        title: "Time Mark - Imagens e Vídeos",
+        url: "https://play.google.com/store/apps/details?id=com.oceangalaxy.camera.new&hl=pt_BR",
         icon: "https://i.postimg.cc/05GN3pw1/Gemini-Generated-Image-6laabv6laabv6laa.png"
       }
     ];
@@ -430,16 +441,16 @@
         card.target = "_blank";
         card.className = 'system-card';
         card.innerHTML = `
-          <div class="status-badge">
-            <div class="status-dot"></div>
-            Ativo
-          </div>
-          <div class="card-logo-wrapper">
+          <div class="card-banner">
+            <div class="status-badge">
+              <div class="status-dot"></div>
+              Acesso
+            </div>
             <img src="${item.icon}" alt="${item.title}">
           </div>
-          <div class="card-footer">
+          <div class="card-body">
+            <span class="card-tag">${item.tag || "Plataforma"}</span>
             <span class="card-title">${item.title}</span>
-            <div class="action-icon">➔</div>
           </div>
         `;
         container.appendChild(card);
@@ -471,6 +482,7 @@
         group.className = 'form-group';
         group.innerHTML = `
           <label>Card ${index + 1}</label>
+          <input type="text" id="tag-${item.id}" value="${item.tag || 'Plataforma'}" placeholder="Categoria/Tag">
           <input type="text" id="title-${item.id}" value="${item.title}" placeholder="Nome do Sistema" required>
           <input type="url" id="url-${item.id}" value="${item.url}" placeholder="Link de Acesso (https://...)" required>
           <input type="url" id="icon-${item.id}" value="${item.icon}" placeholder="Link da Imagem/Logo" required>
@@ -488,6 +500,7 @@
       const data = getData();
       const updatedData = data.map(item => ({
         id: item.id,
+        tag: document.getElementById(`tag-${item.id}`).value,
         title: document.getElementById(`title-${item.id}`).value,
         url: document.getElementById(`url-${item.id}`).value,
         icon: document.getElementById(`icon-${item.id}`).value
@@ -496,6 +509,7 @@
       localStorage.setItem('guardiao_platforms', JSON.stringify(updatedData));
       renderApp();
       closeAdmin();
+      alert("Configurações atualizadas!");
     });
 
     renderApp();
