@@ -3,502 +3,847 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Guardião - Serviços de Qualidade</title>
-
-  <!-- PWA / App Mobile Tags -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#0d0d0d">
-
-  <!-- Fonte Moderna (Inter) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-
+  <title>GUARDIÃO PRO</title>
   <style>
     :root {
-      --bg-gradient: radial-gradient(circle at top, #1a1a1a 0%, #0a0a0a 100%);
-      --card-bg: rgba(255, 255, 255, 0.03);
-      --card-border: rgba(212, 175, 55, 0.25);
-      --card-border-hover: rgba(212, 175, 55, 0.8);
-      --gold-primary: #d4af37;
-      --gold-light: #f3e5ab;
-      --gold-gradient: linear-gradient(135deg, #f7e7ad 0%, #c5a059 50%, #8a6d2b 100%);
-      --text-white: #ffffff;
-      --text-muted: #888888;
-      --green-status: #00e676;
+      --gold: #d4af37;
+      --gold-light: #fef9c3;
+      --gold-hover: #b89628;
+      --red: #dc2626;
+      --red-light: #fee2e2;
+      --green: #16a34a;
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface-card: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #475569;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: var(--bg); color: var(--text); padding-bottom: 80px; }
 
-    body {
-      background: var(--bg-gradient);
-      color: var(--text-white);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 100vh;
-      padding: 24px 18px;
-      overflow-x: hidden;
-    }
+    /* Header App */
+    .app-header { background: var(--surface); padding: 16px; text-align: center; border-bottom: 2px solid var(--gold); position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3); }
+    .app-header h1 { font-size: 1.25rem; font-weight: 800; letter-spacing: 1px; color: #fff; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .app-header small { color: var(--gold); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+    .version-badge { background: var(--gold); color: #000; font-size: 0.65rem; font-weight: 800; padding: 2px 6px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
 
-    /* Botão Flutuante de Configuração */
-    .admin-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--card-border);
-      color: var(--gold-primary);
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      font-size: 18px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s ease;
-      z-index: 10;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    }
+    /* Navegação */
+    .nav-bar { position: fixed; bottom: 0; width: 100%; background: var(--surface); display: flex; border-top: 1px solid var(--border); z-index: 100; box-shadow: 0 -4px 6px -1px rgba(0,0,0,0.3); }
+    .nav-btn { flex: 1; padding: 12px 8px; border: none; background: none; color: var(--text-muted); font-size: 0.75rem; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
+    .nav-btn.active { color: var(--gold); border-top: 3px solid var(--gold); background: rgba(212, 175, 55, 0.08); }
 
-    .admin-btn:active {
-      transform: rotate(90deg) scale(0.9);
-      border-color: var(--gold-primary);
-    }
+    /* Abas */
+    .tab-content { display: none; padding: 16px; max-width: 800px; margin: 0 auto; }
+    .tab-content.active { display: block; }
 
-    /* Topo com Logo da Empresa */
-    header {
-      text-align: center;
-      margin-top: 20px;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    }
+    /* UI Controls */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+    .card-title { font-size: 1rem; font-weight: 700; margin-bottom: 12px; color: var(--gold); display: flex; align-items: center; justify-content: space-between; }
+    
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; }
+    .input-control { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: #0f172a; color: #fff; font-size: 0.95rem; outline: none; }
+    .input-control:focus { border-color: var(--gold); }
+    
+    .btn { width: 100%; padding: 14px; border-radius: 8px; border: none; font-weight: 700; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .btn-gold { background: var(--gold); color: #000; }
+    .btn-gold:active { background: var(--gold-hover); }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    .btn-sm { padding: 8px 12px; font-size: 0.75rem; width: auto; }
 
-    .logo-container {
-      width: 100%;
-      max-width: 250px;
-      position: relative;
-    }
+    /* Progresso */
+    .progress-wrapper { display: none; margin-top: 12px; }
+    .progress-bar-bg { width: 100%; height: 10px; background: #0f172a; border-radius: 5px; overflow: hidden; border: 1px solid var(--border); }
+    .progress-bar-fill { width: 0%; height: 100%; background: var(--gold); transition: width 0.2s ease; }
+    .progress-text { font-size: 0.75rem; color: var(--text-muted); text-align: center; margin-top: 4px; font-weight: 600; }
 
-    .logo-container img {
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.8));
-    }
+    /* Cards do Dashboard */
+    .record-card { background: var(--surface); border-radius: 10px; border: 1px solid var(--border); margin-bottom: 12px; overflow: hidden; }
+    .record-card.ocorrencia { border-left: 5px solid var(--red); }
+    .record-card.ronda { border-left: 5px solid var(--gold); }
+    
+    .record-header { padding: 14px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: rgba(255,255,255,0.02); }
+    .record-header-title { font-weight: 700; font-size: 1rem; display: flex; align-items: center; gap: 8px; }
+    .badge { padding: 3px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; }
+    .badge-alta { background: var(--red); color: #fff; }
+    .badge-media { background: var(--gold); color: #000; }
+    .badge-baixa { background: var(--green); color: #fff; }
+    .badge-ronda { background: var(--gold); color: #000; }
 
-    /* Lista de Cards de Aplicativos */
-    .app-container {
-      width: 100%;
-      max-width: 420px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      margin: 25px 0;
-      animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    }
+    .record-body { display: none; padding: 14px; border-top: 1px solid var(--border); background: #0f172a; }
+    .record-body.expanded { display: block; }
+    .record-obs { font-size: 0.85rem; color: var(--text-muted); background: var(--surface); padding: 10px; border-radius: 6px; margin-bottom: 12px; border-left: 3px solid var(--border); }
 
-    /* Card Pro Style */
-    .system-card {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      background: var(--card-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      padding: 20px;
-      border-radius: 20px;
-      text-decoration: none;
-      color: var(--text-white);
-      border: 1px solid var(--card-border);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-      overflow: hidden;
-    }
+    .image-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+    .image-item { position: relative; aspect-ratio: 1; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); background: #000; display: flex; align-items: center; justify-content: center; }
+    .image-item img { width: 100%; height: 100%; object-fit: contain; }
+    
+    .btn-delete-img { position: absolute; top: 4px; right: 4px; background: rgba(220, 38, 38, 0.85); color: #fff; border: none; border-radius: 50%; width: 22px; height: 22px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 10px; z-index: 5; }
 
-    /* Indicador de Status "Online" */
-    .status-badge {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
+    /* Admin Checklist */
+    .field-row { display: flex; align-items: center; justify-content: space-between; padding: 10px; background: #0f172a; border-radius: 6px; margin-bottom: 8px; border: 1px solid var(--border); }
+    .field-row label { font-size: 0.85rem; font-weight: 600; cursor: pointer; flex: 1; }
+    .field-row input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--gold); cursor: pointer; }
+    .btn-remove-field { background: none; border: none; color: var(--red); font-weight: bold; padding: 0 8px; cursor: pointer; margin-left: 8px; }
 
-    .status-dot {
-      width: 6px;
-      height: 6px;
-      background-color: var(--green-status);
-      border-radius: 50%;
-      box-shadow: 0 0 8px var(--green-status);
-    }
+    /* Preview Tela de Relatório */
+    .report-summary-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 10px; }
+    .report-summary-header { display: flex; justify-content: space-between; font-weight: bold; font-size: 0.9rem; margin-bottom: 4px; }
+    .report-summary-info { font-size: 0.8rem; color: var(--text-muted); }
 
-    /* Efeito de Pressão no Card */
-    .system-card:active {
-      transform: scale(0.97);
-      border-color: var(--card-border-hover);
-      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
-      background: rgba(255, 255, 255, 0.06);
-    }
+    .pdf-only { display: none !important; }
 
-    /* Wrapper do Logo/Imagem dentro do Card */
-    .card-logo-wrapper {
-      width: 100%;
-      height: 85px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 10px;
-      margin-bottom: 14px;
-      border-radius: 12px;
-      background: rgba(0, 0, 0, 0.2);
-      padding: 10px;
-    }
+    /* IMPRESSÃO / PDF ULTRACACTO (SEM ESPAÇOS SOBRANTES) */
+    @media print {
+      @page { margin: 8mm; }
+      body { background: #fff !important; color: #000 !important; padding: 0 !important; font-size: 9pt; }
+      .no-print, .nav-bar, .app-header, #tabDashboard, #tabAdmin, .report-summary-card { display: none !important; }
+      
+      #tabReport { display: block !important; width: 100% !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+      
+      .pdf-only { display: block !important; }
 
-    .card-logo-wrapper img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
-    }
+      .pdf-brand-header {
+        border-bottom: 2px solid #0f172a;
+        padding-bottom: 6px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+      .pdf-title-block h1 { font-size: 14pt; font-weight: 800; color: #0f172a; text-transform: uppercase; letter-spacing: 0.5px; }
+      .pdf-title-block p { font-size: 8pt; color: #475569; font-weight: 600; margin-top: 1px; }
+      .pdf-meta-block { text-align: right; font-size: 8pt; color: #334155; line-height: 1.2; }
+      .pdf-meta-block strong { color: #0f172a; }
 
-    /* Título e Ação do Card */
-    .card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      padding-top: 12px;
-      margin-top: 4px;
-    }
+      /* Ajuste Compacto dos Cards */
+      .pdf-event-card {
+        border: 1px solid #cbd5e1;
+        border-radius: 4px;
+        margin-bottom: 8px !important; /* Espaçamento mínimo entre ocorrencias */
+        page-break-inside: avoid;
+        overflow: hidden;
+      }
+      .pdf-event-header {
+        background: #f8fafc;
+        padding: 4px 8px;
+        border-bottom: 1px solid #cbd5e1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .pdf-event-title { font-size: 9.5pt; font-weight: 700; color: #0f172a; display: flex; align-items: center; gap: 4px; }
+      .pdf-badge { padding: 1px 5px; border-radius: 3px; font-size: 7pt; font-weight: 800; text-transform: uppercase; border: 1px solid transparent; }
+      .pdf-badge-ronda { background: #fef9c3; color: #854d0e; border-color: #fde047; }
+      .pdf-badge-alerta { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
 
-    .card-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text-white);
-      letter-spacing: 0.3px;
-      flex: 1;
-      padding-right: 10px;
-    }
+      .pdf-event-body { padding: 6px 8px; }
+      .pdf-event-obs { background: #f1f5f9; border-left: 3px solid #475569; padding: 4px 6px; font-size: 8pt; color: #1e293b; margin-bottom: 6px; }
 
-    .action-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--gold-gradient);
-      color: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.9rem;
-      font-weight: bold;
-      box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
-    }
-
-    footer {
-      text-align: center;
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      font-weight: 600;
-      opacity: 0.7;
-    }
-
-    /* Modal de Administração Estilo App */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      justify-content: center;
-      align-items: flex-end;
-      z-index: 1000;
-    }
-
-    .modal-content {
-      background: #141414;
-      border: 1px solid var(--card-border);
-      border-top-left-radius: 28px;
-      border-top-right-radius: 28px;
-      padding: 24px;
-      width: 100%;
-      max-width: 480px;
-      max-height: 85vh;
-      overflow-y: auto;
-      color: var(--text-white);
-      animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding-bottom: 12px;
-    }
-
-    .modal-header h2 {
-      color: var(--gold-primary);
-      font-size: 1.1rem;
-      font-weight: 700;
-    }
-
-    .close-btn {
-      background: rgba(255, 255, 255, 0.05);
-      border: none;
-      color: var(--text-white);
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .form-group {
-      margin-bottom: 18px;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      padding: 14px;
-      border-radius: 14px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.75rem;
-      color: var(--gold-primary);
-      font-weight: 700;
-      margin-bottom: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 8px;
-      background: #090909;
-      border: 1px solid #282828;
-      border-radius: 8px;
-      color: #fff;
-      font-size: 0.85rem;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .form-group input:focus {
-      border-color: var(--gold-primary);
-    }
-
-    .save-btn {
-      width: 100%;
-      background: var(--gold-gradient);
-      color: #000;
-      padding: 16px;
-      border: none;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      font-weight: 800;
-      cursor: pointer;
-      margin-top: 10px;
-      letter-spacing: 0.5px;
-      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-    }
-
-    /* Animações Keyframes */
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(100%); }
-      to { transform: translateY(0); }
+      /* Grid Compacto de Fotos */
+      .pdf-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+      .pdf-img-box { border: 1px solid #e2e8f0; border-radius: 3px; overflow: hidden; background: #000; display: flex; align-items: center; justify-content: center; min-height: 80px; }
+      .pdf-img-box img { width: 100%; height: auto; max-height: 160px; object-fit: contain; display: block; }
+      
+      .pdf-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 7.5pt;
+        color: #94a3b8;
+        border-top: 1px solid #e2e8f0;
+        padding-top: 2px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <button class="admin-btn" onclick="openAdmin()" title="Painel Admin">⚙️</button>
-
-  <header>
-    <div class="logo-container">
-      <img id="main-logo" src="logo.png" alt="Guardião" onerror="this.src='https://via.placeholder.com/250x120/0a0a0a/D4AF37?text=GUARDI%C3%83O'">
-    </div>
+  <!-- App Header -->
+  <header class="app-header no-print">
+    <h1>🛡️ GUARDIÃO PRO <span class="version-badge" id="appVersionDisplay">v2.2.0</span></h1>
+    <small id="headerCompanyDisplay">SISTEMA DE CONTROLE DE PLANTÃO</small>
   </header>
 
-  <main class="app-container" id="buttons-container">
-    <!-- Cards renderizados dinamicamente -->
+  <!-- TAB 1: PAINEL DE REGISTROS -->
+  <main id="tabDashboard" class="tab-content active no-print">
+    <div class="card">
+      <div class="card-title">
+        <span>➕ REGISTRAR EVENTO</span>
+      </div>
+      
+      <div class="form-group">
+        <label>Tipo de Evento</label>
+        <select id="regType" class="input-control" onchange="toggleFormMode()">
+          <option value="RONDA">🔄 Ronda Operacional</option>
+          <option value="OCORRENCIA">⚠️ Ocorrência / Alerta</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label id="lblIdentifier">Identificador da Ronda</label>
+        <input type="text" id="inpIdentifier" class="input-control" placeholder="Ex: Ronda 01, Bloco A, Portaria...">
+      </div>
+
+      <div id="wrapperOcorrencia" style="display: none;">
+        <div class="form-group">
+          <label>Nível de Prioridade</label>
+          <select id="inpPriority" class="input-control">
+            <option value="BAIXA">🟢 Baixa Prioridade</option>
+            <option value="MEDIA">🟡 Média Prioridade</option>
+            <option value="ALTA">🔴 Alta Prioridade (Alerta Crítico)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Observação / Detalhes da Ocorrência</label>
+          <textarea id="inpObservation" class="input-control" rows="3" placeholder="Descreva os detalhes da ocorrência aplicáveis a este grupo de fotos..."></textarea>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Fotos da Galeria / Câmera</label>
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('fileInput').click()">
+          📷 Selecionar Imagens
+        </button>
+        <input type="file" id="fileInput" multiple accept="image/*" style="display: none;" onchange="handleFileSelection(event)">
+        <span id="fileCountBadge" style="font-size: 0.75rem; color: var(--gold); display: block; margin-top: 6px; font-weight: 600;"></span>
+      </div>
+
+      <div id="progressWrapper" class="progress-wrapper">
+        <div class="progress-bar-bg">
+          <div id="progressBarFill" class="progress-bar-fill"></div>
+        </div>
+        <div id="progressText" class="progress-text">Processando imagens 0%</div>
+      </div>
+
+      <button type="button" class="btn btn-gold" style="margin-top: 12px;" onclick="processAndSaveGroup()">
+        💾 Processar e Criar Card
+      </button>
+    </div>
+
+    <div style="margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+      <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-muted);">REGISTROS DO PLANTÃO</h3>
+      <button class="btn btn-outline btn-sm" onclick="clearAllData()">🗑️ Limpar Tudo</button>
+    </div>
+
+    <div id="recordsContainer"></div>
   </main>
 
-  <footer>
-    Guardião &copy; Serviços de Qualidade
-  </footer>
+  <!-- TAB 2: PAINEL ADMINISTRATIVO -->
+  <section id="tabAdmin" class="tab-content no-print">
+    <div class="card">
+      <div class="card-title">⚙️ CONFIGURAÇÃO DA ESTAMPA</div>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px;">
+        Marque os itens ativos ou crie novos campos personalizados para aparecer no carimbo das fotos.
+      </p>
 
-  <!-- Modal Admin -->
-  <div class="modal" id="admin-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Painel Administrativo</h2>
-        <button class="close-btn" onclick="closeAdmin()">✕</button>
+      <div class="form-group">
+        <label>Nome da Empresa / Posto</label>
+        <input type="text" id="cfgCompany" class="input-control" placeholder="Ex: Segurança Patrimonial Silva" onchange="saveCompanyConfig()">
       </div>
-      <form id="admin-form">
-        <div class="form-group">
-          <label>URL da Logo Principal</label>
-          <input type="text" id="logo-url-input" placeholder="logo.png ou URL da imagem">
-        </div>
-        <div id="inputs-container"></div>
-        <button type="submit" class="save-btn">SALVAR ALTERAÇÕES</button>
-      </form>
+
+      <div class="form-group">
+        <label>Nome do Agente / Vigilante</label>
+        <input type="text" id="cfgAgent" class="input-control" placeholder="Ex: Agente Carlos" onchange="saveAgentConfig()">
+      </div>
+
+      <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; display: block;">
+        Campos do Carimbo (Checklist)
+      </label>
+      <div id="dynamicFieldsContainer"></div>
+
+      <div style="display: flex; gap: 8px; margin-top: 12px;">
+        <input type="text" id="newFieldName" class="input-control" placeholder="Novo campo (ex: Setor, Viatura...)" style="margin-bottom: 0;">
+        <button class="btn btn-gold btn-sm" onclick="addNewField()" style="width: auto; white-space: nowrap;">+ Adicionar</button>
+      </div>
     </div>
-  </div>
+
+    <div class="card" style="text-align: center; background: rgba(0,0,0,0.2);">
+      <div style="font-size: 0.85rem; font-weight: 700; color: var(--gold);">SISTEMA GUARDIÃO PRO</div>
+      <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Versão Instalada: <strong id="adminVersionDisplay" style="color: #fff;">v2.2.0</strong></div>
+    </div>
+  </section>
+
+  <!-- TAB 3: RELATÓRIO FINAL / PDF -->
+  <section id="tabReport" class="tab-content">
+    <div class="card no-print">
+      <div class="card-title">📄 RELATÓRIO DO PLANTÃO</div>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">
+        Confira o resumo das rondas e eventos registrados. Clique abaixo para gerar o PDF oficial com as imagens estampadas.
+      </p>
+      <button class="btn btn-gold" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>
+    </div>
+
+    <div id="pdfRenderArea"></div>
+  </section>
+
+  <!-- Navegação Inferior -->
+  <nav class="nav-bar no-print">
+    <button class="nav-btn active" onclick="switchTab('tabDashboard', this)">
+      <span>📱</span>
+      <span>Registros</span>
+    </button>
+    <button class="nav-btn" onclick="switchTab('tabAdmin', this)">
+      <span>⚙️</span>
+      <span>Painel Admin</span>
+    </button>
+    <button class="nav-btn" onclick="switchTab('tabReport', this)">
+      <span>📄</span>
+      <span>Relatório</span>
+    </button>
+  </nav>
+
+  <!-- Canvas Oculto para Estampa -->
+  <canvas id="stampCanvas" style="display: none;"></canvas>
 
   <script>
-    const defaultLogo = "logo.png";
-    const defaultData = [
-      {
-        id: 1,
-        title: "Plataforma Relatório Master - Plantões",
-        url: "https://wendeltrindade.github.io/RondaMaster/",
-        icon: "https://i.postimg.cc/kgNgt9Fm/Whats-App-Image-2026-07-22-at-14-11-34.jpg"
-      },
-      {
-        id: 2,
-        title: "Plataforma Relatório Imagens",
-        url: "https://wendeltrindade.github.io/guardiaorelatorios/",
-        icon: "https://i.postimg.cc/MHwsH7WT/Whats-App-Image-2026-07-22-at-14-05-37.jpg"
-      },
-      {
-        id: 3,
-        title: "Plataforma Fotos e Videos",
-        url: "https://wendeltrindade.github.io/VigiaFoto/",
-        icon: "https://i.postimg.cc/05GN3pw1/Gemini-Generated-Image-6laabv6laabv6laa.png"
-      }
-    ];
+    const APP_VERSION = "v2.2.0";
+    let db = null;
+    let selectedFiles = [];
+    let expandedCardIds = new Set();
+    
+    let config = JSON.parse(localStorage.getItem('guardiao_cfg_v2')) || {
+      company: 'SEGURANÇA PATRIMONIAL',
+      agent: 'VIGILANTE',
+      fields: [
+        { id: 'date', label: 'Data', active: true },
+        { id: 'time', label: 'Hora', active: true },
+        { id: 'identifier', label: 'Ronda / Evento', active: true },
+        { id: 'agent', label: 'Agente', active: true },
+        { id: 'company', label: 'Empresa', active: true }
+      ]
+    };
 
-    function getData() {
-      const savedData = localStorage.getItem('guardiao_platforms');
-      return savedData ? JSON.parse(savedData) : defaultData;
+    function initDB() {
+      document.getElementById('appVersionDisplay').innerText = APP_VERSION;
+      document.getElementById('adminVersionDisplay').innerText = APP_VERSION;
+
+      const request = indexedDB.open("GuardiaoProDB", 2);
+      request.onupgradeneeded = (e) => {
+        const database = e.target.result;
+        if (!database.objectStoreNames.contains("records")) {
+          database.createObjectStore("records", { keyPath: "id" });
+        }
+      };
+      request.onsuccess = (e) => {
+        db = e.target.result;
+        renderDashboardCards();
+        renderAdminFields();
+        document.getElementById('cfgCompany').value = config.company;
+        document.getElementById('cfgAgent').value = config.agent;
+        document.getElementById('headerCompanyDisplay').innerText = config.company || 'SISTEMA DE CONTROLE DE PLANTÃO';
+      };
+      request.onerror = () => alert("Erro ao abrir banco de dados local.");
     }
 
-    function getLogo() {
-      return localStorage.getItem('guardiao_logo') || defaultLogo;
-    }
-
-    function renderApp() {
-      document.getElementById('main-logo').src = getLogo();
-
-      const data = getData();
-      const container = document.getElementById('buttons-container');
-      container.innerHTML = '';
-
-      data.forEach(item => {
-        const card = document.createElement('a');
-        card.href = item.url;
-        card.target = "_blank";
-        card.className = 'system-card';
-        card.innerHTML = `
-          <div class="status-badge">
-            <div class="status-dot"></div>
-            Ativo
-          </div>
-          <div class="card-logo-wrapper">
-            <img src="${item.icon}" alt="${item.title}">
-          </div>
-          <div class="card-footer">
-            <span class="card-title">${item.title}</span>
-            <div class="action-icon">➔</div>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    function openAdmin() {
-      const password = prompt("Senha de acesso:");
-      if (password === "admin123") {
-        buildAdminForm();
-        document.getElementById('admin-modal').style.display = 'flex';
-      } else if (password !== null) {
-        alert("Senha incorreta!");
-      }
-    }
-
-    function closeAdmin() {
-      document.getElementById('admin-modal').style.display = 'none';
-    }
-
-    function buildAdminForm() {
-      document.getElementById('logo-url-input').value = getLogo();
-      const data = getData();
-      const container = document.getElementById('inputs-container');
-      container.innerHTML = '';
-
-      data.forEach((item, index) => {
-        const group = document.createElement('div');
-        group.className = 'form-group';
-        group.innerHTML = `
-          <label>Card ${index + 1}</label>
-          <input type="text" id="title-${item.id}" value="${item.title}" placeholder="Nome do Sistema" required>
-          <input type="url" id="url-${item.id}" value="${item.url}" placeholder="Link de Acesso (https://...)" required>
-          <input type="url" id="icon-${item.id}" value="${item.icon}" placeholder="Link da Imagem/Logo" required>
-        `;
-        container.appendChild(group);
-      });
-    }
-
-    document.getElementById('admin-form').addEventListener('submit', (e) => {
-      e.preventDefault();
+    function switchTab(tabId, btnElement) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
       
-      const newLogo = document.getElementById('logo-url-input').value;
-      localStorage.setItem('guardiao_logo', newLogo);
+      document.getElementById(tabId).classList.add('active');
+      if(btnElement) btnElement.classList.add('active');
 
-      const data = getData();
-      const updatedData = data.map(item => ({
-        id: item.id,
-        title: document.getElementById(`title-${item.id}`).value,
-        url: document.getElementById(`url-${item.id}`).value,
-        icon: document.getElementById(`icon-${item.id}`).value
-      }));
+      if (tabId === 'tabReport') {
+        renderPdfReport();
+      }
+    }
 
-      localStorage.setItem('guardiao_platforms', JSON.stringify(updatedData));
-      renderApp();
-      closeAdmin();
-    });
+    function toggleFormMode() {
+      const type = document.getElementById('regType').value;
+      const wrapper = document.getElementById('wrapperOcorrencia');
+      const label = document.getElementById('lblIdentifier');
+      
+      if (type === 'OCORRENCIA') {
+        wrapper.style.display = 'block';
+        label.innerText = 'Identificador da Ocorrência';
+      } else {
+        wrapper.style.display = 'none';
+        label.innerText = 'Identificador da Ronda';
+      }
+    }
 
-    renderApp();
+    function renderAdminFields() {
+      const container = document.getElementById('dynamicFieldsContainer');
+      container.innerHTML = '';
+
+      config.fields.forEach((field, index) => {
+        const row = document.createElement('div');
+        row.className = 'field-row';
+        row.innerHTML = `
+          <label for="chk_${index}">${field.label}</label>
+          <input type="checkbox" id="chk_${index}" ${field.active ? 'checked' : ''} onchange="toggleFieldActive(${index}, this.checked)">
+          ${index > 4 ? `<button class="btn-remove-field" onclick="removeCustomField(${index})">✕</button>` : ''}
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function toggleFieldActive(index, isChecked) {
+      config.fields[index].active = isChecked;
+      saveConfigState();
+    }
+
+    function addNewField() {
+      const input = document.getElementById('newFieldName');
+      const val = input.value.trim();
+      if (!val) return;
+
+      config.fields.push({
+        id: 'custom_' + Date.now(),
+        label: val,
+        active: true
+      });
+
+      input.value = '';
+      saveConfigState();
+      renderAdminFields();
+    }
+
+    function removeCustomField(index) {
+      config.fields.splice(index, 1);
+      saveConfigState();
+      renderAdminFields();
+    }
+
+    function saveCompanyConfig() {
+      config.company = document.getElementById('cfgCompany').value;
+      document.getElementById('headerCompanyDisplay').innerText = config.company || 'SISTEMA DE CONTROLE DE PLANTÃO';
+      saveConfigState();
+    }
+
+    function saveAgentConfig() {
+      config.agent = document.getElementById('cfgAgent').value;
+      saveConfigState();
+    }
+
+    function saveConfigState() {
+      localStorage.setItem('guardiao_cfg_v2', JSON.stringify(config));
+    }
+
+    function handleFileSelection(event) {
+      selectedFiles = Array.from(event.target.files);
+      const badge = document.getElementById('fileCountBadge');
+      badge.innerText = selectedFiles.length > 0 ? `${selectedFiles.length} foto(s) selecionada(s)` : '';
+    }
+
+    async function processAndSaveGroup() {
+      const type = document.getElementById('regType').value;
+      const identifier = document.getElementById('inpIdentifier').value.trim() || (type === 'RONDA' ? 'Ronda Genérica' : 'Ocorrência sem Título');
+      const priority = document.getElementById('inpPriority').value;
+      const obs = document.getElementById('inpObservation').value.trim();
+
+      if (selectedFiles.length === 0) {
+        alert("Por favor, selecione ao menos uma foto.");
+        return;
+      }
+
+      const progressWrapper = document.getElementById('progressWrapper');
+      const progressBarFill = document.getElementById('progressBarFill');
+      const progressText = document.getElementById('progressText');
+      progressWrapper.style.display = 'block';
+
+      const timestamp = new Date();
+
+      let count = 0;
+      const processPromises = selectedFiles.map(async (file) => {
+        const stampedBase64 = await applyStampToImage(file, type, identifier, priority, timestamp);
+        count++;
+        const percent = Math.round((count / selectedFiles.length) * 100);
+        progressBarFill.style.width = percent + '%';
+        progressText.innerText = `Processando imagens ${percent}% (${count}/${selectedFiles.length})`;
+        return {
+          id: 'img_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+          data: stampedBase64
+        };
+      });
+
+      const processedImages = await Promise.all(processPromises);
+
+      const record = {
+        id: 'rec_' + Date.now(),
+        type: type,
+        identifier: identifier,
+        priority: priority,
+        observation: obs,
+        timestamp: timestamp.toLocaleString('pt-BR'),
+        createdTimestamp: timestamp.getTime(),
+        images: processedImages
+      };
+
+      const tx = db.transaction("records", "readwrite");
+      tx.objectStore("records").add(record);
+      tx.oncomplete = () => {
+        setTimeout(() => {
+          progressWrapper.style.display = 'none';
+          progressBarFill.style.width = '0%';
+          document.getElementById('fileInput').value = '';
+          document.getElementById('inpIdentifier').value = '';
+          document.getElementById('inpObservation').value = '';
+          document.getElementById('fileCountBadge').innerText = '';
+          selectedFiles = [];
+          renderDashboardCards();
+        }, 300);
+      };
+    }
+
+    function applyStampToImage(file, type, identifier, priority, dateObj) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.getElementById('stampCanvas');
+            const ctx = canvas.getContext('2d');
+
+            const MAX_WIDTH = 1280;
+            let width = img.width;
+            let height = img.height;
+
+            if (width > MAX_WIDTH) {
+              height = Math.round((height * MAX_WIDTH) / width);
+              width = MAX_WIDTH;
+            }
+
+            canvas.width = width;
+            const bannerHeight = Math.max(70, Math.round(height * 0.12));
+            canvas.height = height + bannerHeight;
+
+            ctx.drawImage(img, 0, 0, width, height);
+
+            ctx.fillStyle = (type === 'OCORRENCIA') ? 'rgba(185, 28, 28, 1)' : 'rgba(15, 23, 42, 1)';
+            ctx.fillRect(0, height, width, bannerHeight);
+
+            if (type === 'OCORRENCIA') {
+              ctx.fillStyle = '#dc2626';
+              ctx.fillRect(0, height, width, 5);
+            }
+
+            ctx.fillStyle = '#ffffff';
+            const fontSize = Math.max(13, Math.round(bannerHeight * 0.28));
+            ctx.font = `bold ${fontSize}px sans-serif`;
+
+            let line1 = [];
+            let line2 = [];
+
+            config.fields.forEach(f => {
+              if (!f.active) return;
+              if (f.id === 'date') line1.push(dateObj.toLocaleDateString('pt-BR'));
+              else if (f.id === 'time') line1.push(dateObj.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'}));
+              else if (f.id === 'identifier') line1.push(identifier.toUpperCase());
+              else if (f.id === 'agent' && config.agent) line2.push(`AGT: ${config.agent}`);
+              else if (f.id === 'company' && config.company) line2.push(config.company);
+              else line2.push(`${f.label.toUpperCase()}`);
+            });
+
+            if (type === 'OCORRENCIA') {
+              line1.unshift(`[ALERTA ${priority}]`);
+            }
+
+            const paddingLeft = 16;
+            ctx.fillText(line1.join(' | '), paddingLeft, height + (bannerHeight * 0.42));
+            
+            ctx.fillStyle = '#cbd5e1';
+            ctx.font = `${Math.round(fontSize * 0.85)}px sans-serif`;
+            ctx.fillText(line2.join(' | '), paddingLeft, height + (bannerHeight * 0.78));
+
+            resolve(canvas.toDataURL('image/jpeg', 0.80));
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function sortRecordsByPriority(records) {
+      return records.sort((a, b) => {
+        if (a.type === 'OCORRENCIA' && b.type !== 'OCORRENCIA') return -1;
+        if (a.type !== 'OCORRENCIA' && b.type === 'OCORRENCIA') return 1;
+        return (b.createdTimestamp || 0) - (a.createdTimestamp || 0);
+      });
+    }
+
+    function renderDashboardCards() {
+      const container = document.getElementById('recordsContainer');
+      container.innerHTML = '';
+
+      const tx = db.transaction("records", "readonly");
+      const store = tx.objectStore("records");
+      store.getAll().onsuccess = (e) => {
+        let records = e.target.result;
+
+        if (records.length === 0) {
+          container.innerHTML = `
+            <div style="text-align: center; color: var(--text-muted); padding: 30px; font-size: 0.85rem;">
+              Nenhum registro adicionado ao plantão ainda.
+            </div>`;
+          return;
+        }
+
+        records = sortRecordsByPriority(records);
+
+        records.forEach((rec) => {
+          const card = document.createElement('div');
+          card.className = `record-card ${rec.type.toLowerCase()}`;
+          const isExpanded = expandedCardIds.has(rec.id);
+          
+          let badgeHtml = rec.type === 'RONDA' 
+            ? `<span class="badge badge-ronda">RONDA</span>`
+            : `<span class="badge badge-${rec.priority.toLowerCase()}">${rec.priority}</span>`;
+
+          card.innerHTML = `
+            <div class="record-header" onclick="toggleCardExpansion('${rec.id}')">
+              <div class="record-header-title">
+                <span>${rec.type === 'RONDA' ? '🔄' : '⚠️'}</span>
+                <span>${rec.identifier}</span>
+                ${badgeHtml}
+              </div>
+              <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: bold;" id="icon_exp_${rec.id}">${isExpanded ? '▲' : '▼'} (${rec.images.length})</span>
+            </div>
+
+            <div id="body_${rec.id}" class="record-body ${isExpanded ? 'expanded' : ''}">
+              ${rec.observation ? `<div class="record-obs"><strong>Obs:</strong> ${rec.observation}</div>` : ''}
+              
+              <div class="image-grid" id="grid_${rec.id}">
+                ${rec.images.map(img => `
+                  <div class="image-item">
+                    <img src="${img.data}" onclick="openImageModal('${img.data}')">
+                    <button class="btn-delete-img" onclick="deleteImageFromRecord('${rec.id}', '${img.id}')">✕</button>
+                  </div>
+                `).join('')}
+              </div>
+
+              <div style="display: flex; gap: 8px; margin-top: 10px;">
+                <button class="btn btn-outline btn-sm" style="flex: 1;" onclick="triggerAddMorePhotos('${rec.id}')">
+                  📷 Adicionar Fotos
+                </button>
+                <button class="btn btn-outline btn-sm" style="color: var(--red); border-color: var(--red);" onclick="deleteRecordGroup('${rec.id}')">
+                  🗑️ Excluir Card
+                </button>
+              </div>
+              <input type="file" id="append_file_${rec.id}" multiple accept="image/*" style="display: none;" onchange="appendPhotosToRecord(event, '${rec.id}')">
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      };
+    }
+
+    function toggleCardExpansion(recordId) {
+      const body = document.getElementById(`body_${recordId}`);
+      const icon = document.getElementById(`icon_exp_${recordId}`);
+      const isExpanded = body.classList.contains('expanded');
+      
+      if (isExpanded) {
+        body.classList.remove('expanded');
+        expandedCardIds.delete(recordId);
+        icon.innerText = icon.innerText.replace('▲', '▼');
+      } else {
+        body.classList.add('expanded');
+        expandedCardIds.add(recordId);
+        icon.innerText = icon.innerText.replace('▼', '▲');
+      }
+    }
+
+    function triggerAddMorePhotos(recordId) {
+      document.getElementById(`append_file_${recordId}`).click();
+    }
+
+    async function appendPhotosToRecord(event, recordId) {
+      const files = Array.from(event.target.files);
+      if (files.length === 0) return;
+
+      const progressWrapper = document.getElementById('progressWrapper');
+      const progressBarFill = document.getElementById('progressBarFill');
+      const progressText = document.getElementById('progressText');
+      progressWrapper.style.display = 'block';
+
+      const tx = db.transaction("records", "readwrite");
+      const store = tx.objectStore("records");
+
+      store.get(recordId).onsuccess = async (e) => {
+        const record = e.target.result;
+        if (!record) return;
+
+        const timestamp = new Date();
+
+        let count = 0;
+        const appendPromises = files.map(async (file) => {
+          const stampedBase64 = await applyStampToImage(file, record.type, record.identifier, record.priority, timestamp);
+          count++;
+          const percent = Math.round((count / files.length) * 100);
+          progressBarFill.style.width = percent + '%';
+          progressText.innerText = `Incluindo novas fotos ${percent}% (${count}/${files.length})`;
+          return {
+            id: 'img_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+            data: stampedBase64
+          };
+        });
+
+        const newImages = await Promise.all(appendPromises);
+        record.images.push(...newImages);
+
+        const updateTx = db.transaction("records", "readwrite");
+        updateTx.objectStore("records").put(record);
+        updateTx.oncomplete = () => {
+          setTimeout(() => {
+            progressWrapper.style.display = 'none';
+            progressBarFill.style.width = '0%';
+            event.target.value = '';
+            expandedCardIds.add(recordId);
+            renderDashboardCards();
+          }, 300);
+        };
+      };
+    }
+
+    function deleteImageFromRecord(recordId, imageId) {
+      if (!confirm("Deseja remover esta foto do card?")) return;
+
+      const tx = db.transaction("records", "readwrite");
+      const store = tx.objectStore("records");
+
+      store.get(recordId).onsuccess = (e) => {
+        const record = e.target.result;
+        record.images = record.images.filter(img => img.id !== imageId);
+
+        if (record.images.length === 0) {
+          store.delete(recordId);
+        } else {
+          store.put(record);
+        }
+
+        tx.oncomplete = () => renderDashboardCards();
+      };
+    }
+
+    function deleteRecordGroup(recordId) {
+      if (!confirm("Deseja remover todo este card e suas fotos?")) return;
+      const tx = db.transaction("records", "readwrite");
+      tx.objectStore("records").delete(recordId);
+      tx.oncomplete = () => {
+        expandedCardIds.delete(recordId);
+        renderDashboardCards();
+      };
+    }
+
+    function clearAllData() {
+      if (!confirm("ATENÇÃO: Deseja apagar TODOS os registros do plantão atual?")) return;
+      const tx = db.transaction("records", "readwrite");
+      tx.objectStore("records").clear();
+      tx.oncomplete = () => {
+        expandedCardIds.clear();
+        renderDashboardCards();
+      };
+    }
+
+    function renderPdfReport() {
+      const container = document.getElementById('pdfRenderArea');
+      container.innerHTML = '';
+
+      const tx = db.transaction("records", "readonly");
+      tx.objectStore("records").getAll().onsuccess = (e) => {
+        let records = e.target.result;
+
+        const now = new Date();
+        const formattedDate = now.toLocaleDateString('pt-BR');
+        const formattedTime = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+        let html = `
+          <div class="pdf-brand-header pdf-only">
+            <div class="pdf-title-block">
+              <h1>${config.company || 'RELATÓRIO PATRIMONIAL'}</h1>
+              <p>RELATÓRIO FOTOGRÁFICO DE INSPEÇÃO E PLANTÃO</p>
+            </div>
+            <div class="pdf-meta-block">
+              <div><strong>Responsável:</strong> ${config.agent || 'N/A'}</div>
+              <div><strong>Emissão:</strong> ${formattedDate} às ${formattedTime}</div>
+              <div><strong>Sistema:</strong> GUARDIÃO PRO ${APP_VERSION}</div>
+            </div>
+          </div>
+        `;
+
+        if (records.length === 0) {
+          html += `
+            <div style="text-align: center; border: 1px dashed var(--border); border-radius: 6px; padding: 40px; margin-top: 20px;">
+              <p style="font-size: 0.9rem; color: var(--text-muted); font-weight: 600;">Nenhum registro ou ronda foi gravado para este relatório.</p>
+            </div>`;
+        } else {
+          records = sortRecordsByPriority(records);
+
+          records.forEach((rec) => {
+            const isOcorrencia = rec.type === 'OCORRENCIA';
+            
+            html += `
+              <div class="report-summary-card no-print">
+                <div class="report-summary-header">
+                  <span>${rec.type === 'RONDA' ? '🔄' : '⚠️'} ${rec.identifier}</span>
+                  <span style="color: ${isOcorrencia ? 'var(--red)' : 'var(--gold)'}">${isOcorrencia ? 'OCORRÊNCIA (' + rec.priority + ')' : 'RONDA'}</span>
+                </div>
+                <div class="report-summary-info">
+                  <div><strong>Horário:</strong> ${rec.timestamp}</div>
+                  ${rec.observation ? `<div><strong>Obs:</strong> ${rec.observation}</div>` : ''}
+                  <div><strong>Fotos vinculadas:</strong> ${rec.images.length} foto(s) estampadas.</div>
+                </div>
+              </div>
+            `;
+
+            html += `
+              <div class="pdf-event-card pdf-only">
+                <div class="pdf-event-header">
+                  <div class="pdf-event-title">
+                    <span>${rec.type === 'RONDA' ? '🔄' : '⚠️'}</span>
+                    <span>${rec.identifier}</span>
+                  </div>
+                  <span class="pdf-badge ${isOcorrencia ? 'pdf-badge-alerta' : 'pdf-badge-ronda'}">
+                    ${isOcorrencia ? 'OCORRÊNCIA (' + rec.priority + ')' : 'RONDA OPERACIONAL'}
+                  </span>
+                </div>
+
+                <div class="pdf-event-body">
+                  <div style="font-size: 7.5pt; color: #64748b; margin-bottom: 4px;">
+                    <strong>Horário:</strong> ${rec.timestamp}
+                  </div>
+
+                  ${rec.observation ? `
+                    <div class="pdf-event-obs">
+                      <strong>Obs:</strong> ${rec.observation}
+                    </div>
+                  ` : ''}
+
+                  <div class="pdf-grid">
+                    ${rec.images.map(img => `
+                      <div class="pdf-img-box">
+                        <img src="${img.data}">
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+        }
+
+        html += `
+          <div class="pdf-footer pdf-only">
+            Documento emitido automaticamente via Guardião Pro - Sistema de Segurança Patrimonial
+          </div>
+        `;
+
+        container.innerHTML = html;
+      };
+    }
+
+    function openImageModal(src) {
+      const w = window.open("");
+      w.document.write(`<img src="${src}" style="width:100%; height:auto;">`);
+    }
+
+    window.onload = initDB;
   </script>
 </body>
 </html>
